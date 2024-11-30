@@ -213,3 +213,15 @@ export const editEmployee = async (req: Request, res: Response) => {
     }
   }
 };
+
+/** delete an Employee */
+export const deleteEmployee = async (req: Request, res: Response) => {
+  try {
+    const deletedEmpolyee = await Employee.findByIdAndDelete(req.params.id);
+    return res.status(200).json(deletedEmpolyee);
+  } catch (error) {
+    return res.status(400).json({
+      errorMessage: error,
+    });
+  }
+};

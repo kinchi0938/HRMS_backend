@@ -1,5 +1,6 @@
 import express from "express";
 import {
+  deleteEmployee,
   editEmployee,
   employeeList,
   employeerProfile,
@@ -11,5 +12,6 @@ const employeeRouter = express.Router();
 employeeRouter.get("/", extractJWT, employeeList);
 employeeRouter.get("/:id", employeerProfile);
 employeeRouter.patch("/edit/:id", extractJWT, editEmployee);
+employeeRouter.delete("/:id", extractJWT, deleteEmployee);
 
 export default employeeRouter;
