@@ -127,3 +127,25 @@ export const Login = async (req: Request, res: Response) => {
     }
   }
 };
+
+/** get Employee */
+export const employeerProfile = async (req: Request, res: Response) => {
+  try {
+    const user = await Employee.findById(req.params.id);
+    if (user) {
+      return res.status(200).json(user);
+    }
+    try {
+      const employee = await Employee.findById(req.params.id);
+      return res.status(200).json(employee);
+    } catch (error) {
+      return res.status(400).json({
+        errorMessage: error,
+      });
+    }
+  } catch (error) {
+    return res.status(400).json({
+      errorMessage: error,
+    });
+  }
+};
