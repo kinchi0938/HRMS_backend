@@ -162,3 +162,54 @@ export const employeerProfile = async (req: Request, res: Response) => {
     });
   }
 };
+
+/** update a Employee */
+export const editEmployee = async (req: Request, res: Response) => {
+  const {
+    username,
+    firstName,
+    lastName,
+    email,
+    street,
+    housenumber,
+    zipcode,
+    city,
+    country,
+    role,
+  } = req.body;
+
+  // Validate the email
+  if (!ValidateEmail(email)) {
+    return res.status(403).json({ errorMessage: "Invalid email address." });
+  }
+
+  const EmployeeExists = await Employee.exists({
+    $or: [{ username }, { email }],
+  });
+  if (EmployeeExists) {
+    if (!username || !firstName || !lastName || !email || !role) {
+      return res
+        .json({ errorMessage: "Please Check required fields" })
+        .status(401);
+    }
+    try {
+      const editedEmployee = await Employee.findByIdAndUpdate(req.params.id, {
+        username,
+        firstName,
+        lastName,
+        email,
+        street,
+        housenumber,
+        zipcode,
+        city,
+        country,
+        role,
+      });
+      return res.status(200).json(editedEmployee);
+    } catch (error) {
+      return res.status(400).json({
+        errorMessage: error,
+      });
+    }
+  }
+};
