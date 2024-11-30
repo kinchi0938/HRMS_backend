@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import bcrypt from "bcrypt";
 import Employee from "../models/Employee";
 import ValidateEmail from "../utils/emailValidation";
+import signJWT from "../utils/signJWT";
 
 //** get all employees from db */
 export const employeeList = async (req: Request, res: Response) => {
@@ -113,8 +114,20 @@ export const Login = async (req: Request, res: Response) => {
         errorMessage: "Wrong password",
       });
     } else {
-      return res.status(200).json({
-        message: "Auth successful",
+      signJWT(user, (error, token) => {
+        if (error) {
+          return res.status(500).json({
+            message: error.message,
+            error: error,
+          });
+        } else if (token) {
+          res.locals.token = token;
+          return res.status(200).json({
+            message: "Auth successful",
+            token: token,
+            userid: user._id,
+          });
+        }
       });
     }
   } catch (error) {
