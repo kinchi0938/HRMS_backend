@@ -96,3 +96,34 @@ export const Signup = async (req: Request, res: Response) => {
     });
   }
 };
+
+/** log in a new Employee   */
+export const Login = async (req: Request, res: Response) => {
+  const { username, password } = req.body;
+  const user = await Employee.findOne({ username });
+  if (!user) {
+    return res.status(400).json({
+      errorMessage: "An account with this username does not exists.",
+    });
+  }
+  try {
+    const ok = await bcrypt.compare(password, user.password);
+    if (!ok) {
+      return res.status(400).json({
+        errorMessage: "Wrong password",
+      });
+    } else {
+      return res.status(200).json({
+        message: "Auth successful",
+      });
+    }
+  } catch (error) {
+    if (error instanceof Error) {
+      res.status(500).json({
+        error,
+      });
+    } else {
+      console.log("Unexpected error", error);
+    }
+  }
+};
