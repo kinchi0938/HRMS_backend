@@ -125,7 +125,7 @@ export const Login = async (req: Request, res: Response) => {
           return res.status(200).json({
             message: "Auth successful",
             token: token,
-            userid: user._id,
+            username: user.username,
           });
         }
       });
