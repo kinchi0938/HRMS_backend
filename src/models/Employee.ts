@@ -15,6 +15,7 @@ const EmployeeSchema: Schema = new Schema({
   city: String,
   country: String,
   role: { type: String, required: true },
+  admin: Boolean,
   comments: [{ type: Object }],
 });
 
