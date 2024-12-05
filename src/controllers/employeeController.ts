@@ -21,7 +21,7 @@ export const Signup = async (req: Request, res: Response) => {
   const {
     username,
     password,
-    password2,
+    passwordConfirm,
     firstName,
     lastName,
     email,
@@ -38,7 +38,7 @@ export const Signup = async (req: Request, res: Response) => {
   if (
     !username ||
     !password ||
-    !password2 ||
+    !passwordConfirm ||
     !firstName ||
     !lastName ||
     !email ||
@@ -53,7 +53,7 @@ export const Signup = async (req: Request, res: Response) => {
     return res.status(403).json({ errorMessage: "Invalid email address." });
   }
 
-  if (password !== password2) {
+  if (password !== passwordConfirm) {
     return res
       .status(403)
       .json({ errorMessage: "Password confirmation does not match." });
@@ -76,7 +76,7 @@ export const Signup = async (req: Request, res: Response) => {
   const hashedPassword = await bcrypt.hash(password, 5);
 
   try {
-    const createdUser = await Employee.create({
+    const createdEmployee = await Employee.create({
       username,
       password: hashedPassword,
       firstName,
@@ -90,54 +90,11 @@ export const Signup = async (req: Request, res: Response) => {
       role,
       admin,
     });
-    res.status(200).json({ createdUser });
+    res.status(200).json({ createdEmployee });
   } catch (error) {
     return res.status(400).json({
       errorMessage: error,
     });
-  }
-};
-
-/** log in a new Employee   */
-export const Login = async (req: Request, res: Response) => {
-  const { username, password } = req.body;
-  const user = await Employee.findOne({ username });
-  if (!user) {
-    return res.status(400).json({
-      errorMessage: "An account with this username does not exists.",
-    });
-  }
-  try {
-    const ok = await bcrypt.compare(password, user.password);
-    if (!ok) {
-      return res.status(400).json({
-        errorMessage: "Wrong password",
-      });
-    } else {
-      signJWT(user, (error, token) => {
-        if (error) {
-          return res.status(500).json({
-            message: error.message,
-            error: error,
-          });
-        } else if (token) {
-          res.locals.token = token;
-          return res.status(200).json({
-            message: "Auth successful",
-            token: token,
-            username: user.username,
-          });
-        }
-      });
-    }
-  } catch (error) {
-    if (error instanceof Error) {
-      res.status(500).json({
-        error,
-      });
-    } else {
-      console.log("Unexpected error", error);
-    }
   }
 };
 
