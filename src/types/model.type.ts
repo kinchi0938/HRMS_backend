@@ -11,5 +11,12 @@ export interface IEmployee {
   country: string;
   role: string;
   admin: boolean;
-  comments?: [];
+  comments?: IComment[];
+}
+
+export interface IComment {
+  username: string;
+  text: string;
+  createdAt: string;
+  author: string;
 }

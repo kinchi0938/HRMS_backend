@@ -1,5 +1,5 @@
 import mongoose, { Document, Schema } from "mongoose";
-import { IEmployee } from "../types/model.type";
+import { IComment, IEmployee } from "../types/model.type";
 
 export interface IEmployeeModel extends IEmployee, Document {}
 
@@ -16,7 +16,7 @@ const EmployeeSchema: Schema = new Schema({
   country: String,
   role: { type: String, required: true },
   admin: Boolean,
-  comments: [{ type: Object }],
+  comments: Array<IComment>,
 });
 
 const Employee = mongoose.model<IEmployee>("Employee", EmployeeSchema);

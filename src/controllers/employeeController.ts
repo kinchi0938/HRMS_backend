@@ -2,7 +2,6 @@ import { Request, Response } from "express";
 import bcrypt from "bcrypt";
 import Employee from "../models/Employee";
 import ValidateEmail from "../utils/emailValidation";
-import signJWT from "../utils/signJWT";
 
 //** get all employees from db */
 export const employeeList = async (req: Request, res: Response) => {
