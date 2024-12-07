@@ -11,7 +11,7 @@ const employeeRouter = express.Router();
 
 employeeRouter.get("/", extractJWT, employeeList);
 employeeRouter.get("/:id", employeerProfile);
-employeeRouter.patch("/edit/:id", extractJWT, editEmployee);
+employeeRouter.put("/edit/:id", extractJWT, editEmployee);
 employeeRouter.delete("/:id", extractJWT, deleteEmployee);
 
 export default employeeRouter;

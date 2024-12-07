@@ -7,6 +7,7 @@ export const createComment = async (req: Request, res: Response) => {
   const { username, text, author } = req.body;
   // check if there are all required fields
   if (!username || !text || !author) {
+    console.log(req.body);
     return res
       .status(403)
       .json({ errorMessage: "Please Check required fields" });
