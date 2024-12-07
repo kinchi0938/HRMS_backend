@@ -1,4 +1,4 @@
-# Employee Management System API Documentation
+# HRMS API Documentation
 
 ## 목차
 - [Base URLs](#base-urls)
